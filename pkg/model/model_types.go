@@ -18,6 +18,7 @@ type EntityTypedId struct {
 // ResourceType defines the data type of the resource type.
 // Various types of resource are listed in the resource subpackage.
 type ResourceType string
+type ConstraintType string
 
 // MetricPropType defines the data type of the metric property type.
 // Various types of metric property are listed in the property subpackage.

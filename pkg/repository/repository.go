@@ -19,12 +19,5 @@ type Repository interface {
 
 	// SetEntities() updates the repository with the given set of RepositoryEntity's
 	SetEntities([]RepositoryEntity)
-
-	// SetMetricValue() sets the value of the given metric in the repository
-	SetMetricValue(
-		entityType model.EntityType,
-		entityId model.EntityId,
-		metricKey EntityMetricKey,
-		value model.MetricValue,
-	) error
+	SetEntity(inputEntity RepositoryEntity)
 }

@@ -17,19 +17,17 @@ type MetricMeta struct {
 // The MetricSetter interface defines what a metric setter does -
 // it defines how the input metric value is processed before setting the corresponding value in the repo entity.
 type MetricSetter interface {
-	SetMetricValue(entity repository.RepositoryEntity, key repository.EntityMetricKey, value model.MetricValue)
+	SetMetricValue(key repository.EntityMetricKey, value model.MetricValue)
 }
 
 // DefaultMetricSetter is a default implementation of a MetricSetter that just sets the value
 // with the given key in the repo entity
-type DefaultMetricSetter struct{}
+type DefaultMetricSetter struct {
+	MetricsMap repository.EntityMetricMap
+}
 
-func (setter DefaultMetricSetter) SetMetricValue(
-	repoEntity repository.RepositoryEntity,
-	key repository.EntityMetricKey,
-	value model.MetricValue,
-) {
-	repoEntity.SetMetricValue(key, value)
+func (setter DefaultMetricSetter) SetMetricValue(key repository.EntityMetricKey, value model.MetricValue) {
+	setter.MetricsMap.SetMetricValue(key.ResourceType, key.PropType, value)
 }
 
 // MakeMetricMetaWithDefaultSetter makes a MetricMeta with given entity type, resource type and metric

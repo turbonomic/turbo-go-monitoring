@@ -9,19 +9,29 @@ import (
 type RepositoryEntity interface {
 	// GetId() returns the associated entity id
 	GetId() model.EntityId
-
+	GetDisplayName() string
 	// GetType() returns the type of the associated entity
 	GetType() model.EntityType
 
 	// GetTypedId() returns the type and id of the associated entity
 	GetTypedId() model.EntityTypedId
 
-	// GetAllMetrics() returns all metrics of the entity in the form of EntityMetricMap
-	GetAllMetrics() EntityMetricMap
+	GetSoldResource(resourceId *ResourceIdentifier) (*EntityResource, error)
+	GetAllSoldResources() []*EntityResource
 
-	// GetMetricValue() returns the metric value associated with the given key in this entity
-	GetMetricValue(metricKey EntityMetricKey) (model.MetricValue, error)
+	SetSoldResource(soldResource *EntityResource)
+	SetSoldResourceValue(resourceId *ResourceIdentifier, prop model.MetricPropType, value model.MetricValue)
 
-	// SetMetricValue() sets the given metric key-value in this entity
-	SetMetricValue(metricKey EntityMetricKey, value model.MetricValue)
+	GetProviders() map[model.EntityType][]model.EntityId
+	GetBoughtResource(providerType model.EntityType, provider model.EntityId, resourceId *ResourceIdentifier) (*EntityResource, error)
+	GetBoughtResourcesByProvider(providerType model.EntityType, provider model.EntityId) ([]*EntityResource, error)
+	GetBoughtResourcesByProviderType(providerType model.EntityType) (map[model.EntityId][]*EntityResource, error)
+
+	SetBoughtResourceValue(providerType model.EntityType, provider model.EntityId, resourceId *ResourceIdentifier, prop model.MetricPropType, value model.MetricValue)
+	SetBoughtResource(providerType model.EntityType, provider model.EntityId, boughtResource *EntityResource)
+
+
+
 }
+
+

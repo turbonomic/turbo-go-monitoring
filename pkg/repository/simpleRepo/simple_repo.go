@@ -48,6 +48,15 @@ func (repo SimpleMetricRepo) GetEntitiesByType(entityType model.EntityType) []re
 	return entities
 }
 
+func (repo SimpleMetricRepo) SetEntity(inputEntity repository.RepositoryEntity) {
+	id2EntityMap, exists := repo[inputEntity.GetType()]
+	if !exists {
+		id2EntityMap = map[model.EntityId]repository.RepositoryEntity{}
+		repo[inputEntity.GetType()] = id2EntityMap
+	}
+	id2EntityMap[inputEntity.GetId()] = inputEntity
+}
+
 func (repo SimpleMetricRepo) SetEntities(inputEntities []repository.RepositoryEntity) {
 	for _, inputEntity := range inputEntities {
 		id2EntityMap, exists := repo[inputEntity.GetType()]
@@ -59,16 +68,24 @@ func (repo SimpleMetricRepo) SetEntities(inputEntities []repository.RepositoryEn
 	}
 }
 
-func (repo SimpleMetricRepo) SetMetricValue(
-	entityType model.EntityType,
-	entityId model.EntityId,
-	key repository.EntityMetricKey,
-	value model.MetricValue,
-) error {
+func (repo SimpleMetricRepo) SetSoldMetricValue(entityType model.EntityType, entityId model.EntityId,
+				key repository.MetricKey, value model.MetricValue) error {
 	repoEntity, err := repo.GetEntity(entityType, entityId)
 	if err != nil {
 		return err
 	}
-	repoEntity.SetMetricValue(key, value)
+	repoEntity.SetSoldResourceValue(key.ResourceIdentifier, key.PropType, value)
 	return nil
 }
+
+
+func (repo SimpleMetricRepo) SetBoughtMetricValue(entityType model.EntityType, entityId model.EntityId, providerType model.EntityType,
+							provider model.EntityId, key repository.MetricKey, value model.MetricValue) error {
+	repoEntity, err := repo.GetEntity(entityType, entityId)
+	if err != nil {
+		return err
+	}
+	repoEntity.SetBoughtResourceValue(providerType, provider, key.ResourceIdentifier, key.PropType, value)
+	return nil
+}
+

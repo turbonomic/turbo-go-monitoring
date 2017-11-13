@@ -16,12 +16,13 @@ type EntityMetricKey struct {
 	PropType     model.MetricPropType
 }
 
+func NewEntityMetricKey(resourceType model.ResourceType, propType model.MetricPropType) *EntityMetricKey{
+	return &EntityMetricKey{ResourceType: resourceType, PropType: propType}
+}
+
 // SetMetricValue sets the metric value in the MetricMap for the given resource type and the metric property type
-func (metricMap EntityMetricMap) SetMetricValue(
-	resourceType model.ResourceType,
-	propType model.MetricPropType,
-	value model.MetricValue,
-) {
+func (metricMap EntityMetricMap) SetMetricValue(resourceType model.ResourceType,
+							propType model.MetricPropType, value model.MetricValue) {
 	resourceMap, exists := metricMap[resourceType]
 	if !exists {
 		resourceMap = make(map[model.MetricPropType]model.MetricValue)
@@ -31,10 +32,8 @@ func (metricMap EntityMetricMap) SetMetricValue(
 }
 
 // GetMetricValue retrieves the metric value from the MetricMap for the given resource type and the metric property type
-func (metricMap EntityMetricMap) GetMetricValue(
-	resourceType model.ResourceType,
-	propType model.MetricPropType,
-) (model.MetricValue, error) {
+func (metricMap EntityMetricMap) GetMetricValue(resourceType model.ResourceType,
+							propType model.MetricPropType) (model.MetricValue, error) {
 	resourceMap, exists := metricMap[resourceType]
 	if !exists {
 		glog.V(4).Infof("Cannot find metrics for resource %s\n", resourceType)

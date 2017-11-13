@@ -24,7 +24,7 @@ func MakeMonitoringProps(repo repository.Repository, monitoringTemplate Monitori
 }
 
 // ByMetricMeta rearranges MonitoringProps by MetricMeta, with value being a list of EntityId's
-func (byEntityTypedId MonitoringProps) ByMetricMeta(repo repository.Repository) map[MetricMeta][]model.EntityTypedId {
+func (byEntityTypedId MonitoringProps) ByMetricMeta() map[MetricMeta][]model.EntityTypedId {
 	byMetricMeta := map[MetricMeta][]model.EntityTypedId{}
 	for entityTypedId, monTemplate := range byEntityTypedId {
 		for _, metricMeta := range monTemplate {
